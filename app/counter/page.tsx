@@ -1,7 +1,8 @@
 // deve importar o componente
 import Link from 'next/link'
 
-
-<Link href="/counter">
-    Counter
-</Link>
+export default function Page() {
+    <Link href="/counter">
+        Counter
+    </Link>
+}

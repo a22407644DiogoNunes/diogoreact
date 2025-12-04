@@ -20,8 +20,8 @@ export default function page() {
             </Link>
           </li>
           <li>
-            <Link href="/características" className="hover:text-yellow-400">
-              Características
+            <Link href="/caracteristicas" className="hover:text-yellow-400">
+              Caracteristicas
             </Link>
           </li>
           <li>

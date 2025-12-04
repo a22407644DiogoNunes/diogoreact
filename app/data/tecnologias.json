@@ -13,73 +13,73 @@
   },
   {
     "title": "Tailwind CSS",
-    "image": "/tecnologias/tailwind.svg",
+    "image": "/tecnologias/Tailwind CSS.svg",
     "description": "Framework de CSS utilitário que permite criar rapidamente interfaces modernas.",
     "rating": 5
   },
   {
     "title": "JavaScript",
-    "image": "/tecnologias/javascript.svg",
+    "image": "/tecnologias/JavaScript.svg",
     "description": "Linguagem de programação essencial para tornar páginas web interativas.",
     "rating": 3
   },
   {
     "title": "TypeScript",
-    "image": "/tecnologias/typescript.svg",
+    "image": "/tecnologias/Typescript.svg",
     "description": "Superset do JavaScript que adiciona tipagem estática para maior robustez.",
     "rating": 3
   },
   {
     "title": "JSON",
-    "image": "/tecnologias/json.svg",
+    "image": "/tecnologias/JSON.svg",
     "description": "Formato leve de troca de dados, fácil de ler e escrever, muito usado em APIs.",
     "rating": 4
   },
   {
     "title": "API RESTful",
-    "image": "/tecnologias/rest.svg",
+    "image": "/tecnologias/API-RESTful.svg",
     "description": "Estilo arquitetural para comunicação entre serviços utilizando operações HTTP.",
     "rating": 4
   },
   {
     "title": "Swagger",
-    "image": "/tecnologias/swagger.svg",
+    "image": "/tecnologias/Swagger.svg",
     "description": "Ferramenta para documentar, testar e visualizar APIs REST.",
     "rating": 4
   },
   {
     "title": "GitHub",
-    "image": "/tecnologias/github.svg",
+    "image": "/tecnologias/GitHub.svg",
     "description": "Plataforma de alojamento e gestão de código com suporte a Git.",
     "rating": 5
   },
   {
     "title": "Codespaces",
-    "image": "/tecnologias/codespaces.svg",
+    "image": "/tecnologias/Codespaces.svg",
     "description": "Ambiente de desenvolvimento na cloud integrado com o GitHub.",
     "rating": 5
   },
   {
     "title": "GitHub Pages",
-    "image": "/tecnologias/github-pages.svg",
+    "image": "/tecnologias/GitHub-Pages.svg",
     "description": "Serviço do GitHub para alojar websites estáticos diretamente de um repositório.",
     "rating": 5
   },
   {
     "title": "React.js",
-    "image": "/tecnologias/react.svg",
+    "image": "/tecnologias/React.svg",
     "description": "Biblioteca JavaScript para construir interfaces de utilizador com componentes reutilizáveis.",
     "rating": 5
   },
   {
     "title": "Next.js",
-    "image": "/tecnologias/nextjs.svg",
+    "image": "/tecnologias/Next.svg",
     "description": "Framework baseada em React para aplicações full-stack com renderização otimizada.",
     "rating": 5
   },
   {
     "title": "Vercel",
-    "image": "/tecnologias/vercel.svg",
+    "image": "/tecnologias/Vercel.svg",
     "description": "Plataforma de deploy otimizada para aplicações React/Next.js.",
     "rating": 5
   }
