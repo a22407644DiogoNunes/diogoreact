@@ -30,8 +30,13 @@ export default function AppPage() {
             </Link>
           </li>
           <li>
-            <Link href="/projetos" className="hover:text-yellow-400"> 
+            <Link href="/projetos" className="hover:text-yellow-400">
               Projetos
+            </Link>
+          </li>
+          <li>
+            <Link href="/produtos" className="hover:text-yellow-400">
+              Loja
             </Link>
           </li>
         </ul>
