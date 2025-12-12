@@ -1,5 +1,5 @@
 import caracteristicas from "../data/caracteristicas.json";
-import Caracteristica from "@/components/MagiaDoJSX/Caracteristica";
+import Caracteristica from "../components/MagiaDoJSX/Caracteristica";
 
 interface Caracteristica1 {
   nome: string;

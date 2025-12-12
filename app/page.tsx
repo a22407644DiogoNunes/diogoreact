@@ -1,4 +1,4 @@
-import MagiaDoJSX from '@/components/MagiaDoJSX/MagiaDoJSX'
+import MagiaDoJSX from './components/MagiaDoJSX/MagiaDoJSX'
 import Link from 'next/link'
 
 export default function AppPage() {
