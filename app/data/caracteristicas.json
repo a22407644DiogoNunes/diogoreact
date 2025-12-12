@@ -1,0 +1,14 @@
+[
+  {
+    "nome": "Performance",
+    "descricao": "O sistema é rápido e eficiente."
+  },
+  {
+    "nome": "Escalabilidade",
+    "descricao": "Capaz de lidar com aumento de utilizadores."
+  },
+  {
+    "nome": "Segurança",
+    "descricao": "Protege dados e acessos."
+  }
+]

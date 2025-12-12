@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function Page() {
+export default function SobrePage() {
     return (
         
         <>
@@ -9,6 +9,9 @@ export default function Page() {
             <nav className="flex gap-4">
                 <Link href="/">Intro</Link>
                 <Link href="/sobre">Sobre</Link>
+                <Link href="/caracteristicas">Caracteristicas</Link>
+                <Link href="/tecnologias">Tecnologias</Link>
+                <Link href="/projetos">Projetos</Link>
             </nav>
         </header>
         <h2>Desenvolvimento Web Moderno</h2>

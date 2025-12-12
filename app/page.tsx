@@ -1,7 +1,7 @@
 import MagiaDoJSX from '@/components/MagiaDoJSX/MagiaDoJSX'
 import Link from 'next/link'
 
-export default function page() {
+export default function AppPage() {
   return (
     <div>
       <h2>Interfaces Modernos</h2>
@@ -27,6 +27,11 @@ export default function page() {
           <li>
             <Link href="/tecnologias" className="hover:text-yellow-400">
               Tecnologias
+            </Link>
+          </li>
+          <li>
+            <Link href="/projetos" className="hover:text-yellow-400"> 
+              Projetos
             </Link>
           </li>
         </ul>
