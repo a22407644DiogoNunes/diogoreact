@@ -1,11 +1,9 @@
 import caracteristicas from "../../data/caracteristicas.json";
 import Link from "next/link";
 
-export default function CaracteristicaPage({
-  params,
-}: {
-  params: { caracteristica: string };
-}) {
+export async function generateStaticParams() { return caracteristicas.map(c => ({ caracteristica: c.nome })); }
+
+export default function CaracteristicaPage({ params }: any) {
   const nome = decodeURI(params.caracteristica);
 
   const caract = caracteristicas.find(c => c.nome === nome);
