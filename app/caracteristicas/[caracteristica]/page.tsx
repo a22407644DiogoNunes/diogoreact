@@ -2,19 +2,22 @@ import caracteristicas from "../../data/caracteristicas.json";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-// ← Muda pra async e await params
-export default async function CaracteristicaPage({
-  params,
-}: {
-  params: Promise<{ caracteristica: string }>;
-}) {
-  // Await no params (obrigatório no Next.js novo)
-  const { caracteristica } = await params;
+// Tipagem para cada característica
+interface Caracteristica {
+  nome: string;
+  descricao: string;
+}
 
-  const slugRecebido = decodeURIComponent(caracteristica).toLowerCase().trim();
+// Gera os paths estáticos para SSG
+export async function generateStaticParams() {
+  return caracteristicas.map(c => ({ caracteristica: c.nome }));
+}
+
+export default function CaracteristicaPage({ params }: { params: { caracteristica: string } }) {
+  const slugRecebido = decodeURIComponent(params.caracteristica).toLowerCase().trim();
 
   const caract = caracteristicas.find(
-    (c: any) => c.nome.toLowerCase().trim() === slugRecebido
+    (c: Caracteristica) => c.nome.toLowerCase().trim() === slugRecebido
   );
 
   if (!caract) {
@@ -34,6 +37,6 @@ export default async function CaracteristicaPage({
           ← Voltar para lista
         </Link>
       </div>
-    </main>
-  );
+    </main>
+  );
 }
