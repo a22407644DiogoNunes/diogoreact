@@ -6,7 +6,9 @@ interface ProdutoDetalheProps {
 }
 
 export default function ProdutoDetalhe({ produto }: ProdutoDetalheProps) {
-    const imageUrl = `https://deisishop.pythonanywhere.com${produto.image}`;
+    const imageUrl = produto.image.startsWith('http') 
+  ? produto.image 
+  : `https://deisishop.pythonanywhere.com${produto.image}`;
 
     return (
         <div className="max-w-3xl mx-auto p-8">

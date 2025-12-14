@@ -15,11 +15,13 @@ const fetcher = async (url: string) => {
 export default function ProdutosPage() {
   const [search, setSearch] = useState("");
   const [ordenacao, setOrdenacao] = useState("nome-asc");
-  const [cart, setCart] = useState<Product[]>([]); // estado do carrinho
 
+  // Estado do carrinho
+  const [cart, setCart] = useState<Product[]>([]);
   const [student, setStudent] = useState(false);
   const [coupon, setCoupon] = useState("");
-  const [isBuying, setIsBuying] = useState(false);
+  const [purchaseResponse, setPurchaseResponse] = useState<string | null>(null);
+  const [isPurchasing, setIsPurchasing] = useState(false);
 
   const { data, error, isLoading } = useSWR<Product[]>(
     "https://deisishop.pythonanywhere.com/products/",
@@ -29,9 +31,7 @@ export default function ProdutosPage() {
   // Inicializa cart a partir do localStorage
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    }
+    if (storedCart) setCart(JSON.parse(storedCart));
   }, []);
 
   // Atualiza localStorage sempre que cart muda
@@ -39,81 +39,78 @@ export default function ProdutosPage() {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  if (error) return <div className="text-red-500">Erro: {error.message}</div>;
-  if (isLoading) return <div className="flex justify-center items-center"><span className="loader"></span>Carregando...</div>;
-  if (!data) return null;
-
-  // Filtrar produtos pelo nome
-  let filteredData = [...data]
-    .filter((produto) =>
-      produto.title.toLowerCase().includes(search.toLowerCase())
-    )
-    .sort((a, b) => {
-      switch (ordenacao) {
-        case "nome-asc": return a.title.localeCompare(b.title);
-        case "nome-desc": return b.title.localeCompare(a.title);
-        case "preco-asc": return a.price - b.price;
-        case "preco-desc": return b.price - a.price;
-        default: return 0;
-      }
-    });
+  // Filtrar e ordenar produtos
+  const filteredData = data
+    ? [...data]
+        .filter((produto) => produto.title.toLowerCase().includes(search.toLowerCase()))
+        .sort((a, b) => {
+          switch (ordenacao) {
+            case "nome-asc": return a.title.localeCompare(b.title);
+            case "nome-desc": return b.title.localeCompare(a.title);
+            case "preco-asc": return a.price - b.price;
+            case "preco-desc": return b.price - a.price;
+            default: return 0;
+          }
+        })
+    : [];
 
   // Funções do carrinho
   const addToCart = (produto: Product) => {
-    // Evitar duplicados
-    if (!cart.find(p => p.id === produto.id)) {
-      setCart([...cart, produto]);
-    }
+    if (!cart.find((p) => p.id === produto.id)) setCart([...cart, produto]);
   };
 
   const removeFromCart = (produtoId: number) => {
-    setCart(cart.filter(p => p.id !== produtoId));
+    setCart(cart.filter((p) => p.id !== produtoId));
   };
 
-  const totalPrice = cart.reduce(
-    (acc, produto) => acc + Number(produto.price),
-    0
-  );
+  const totalPrice = cart.reduce((acc, produto) => acc + Number(produto.price), 0);
 
+  // Função de compra
   const buy = async () => {
-    try {
-      setIsBuying(true);
+    if (cart.length === 0) {
+      setPurchaseResponse("O carrinho está vazio!");
+      return;
+    }
 
-      const response = await fetch(
-        "https://deisishop.pythonanywhere.com/api/deisishop/buy",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            products: cart.map((product) => product.id),
-            name: "Cliente",
-            student: student,
-            coupon: coupon,
-          }),
-        }
-      );
+    setIsPurchasing(true);
+    setPurchaseResponse(null);
+
+    try {
+      const response = await fetch("https://deisishop.pythonanywhere.com/buy/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          products: cart.map((p) => p.id),
+          name: "Cliente",
+          student,
+          coupon: coupon.trim(),
+        }),
+      });
 
       if (!response.ok) {
-        throw new Error("Erro ao comprar");
+        const text = await response.text();
+        throw new Error(text || "Erro ao comprar");
       }
 
       const data = await response.json();
-      console.log("Compra efetuada:", data);
+      const total = data.total_price ?? totalPrice.toFixed(2);
+      setPurchaseResponse(`Compra efetuada com sucesso!\nTotal pago: ${total} €`);
 
-      // limpar carrinho
       setCart([]);
+      setCoupon("");
+      setStudent(false);
       localStorage.removeItem("cart");
-
-      alert("Compra realizada com sucesso!");
-    } catch (error) {
-      console.error(error);
-      alert("Erro ao realizar a compra");
+    } catch (err: any) {
+      console.error(err);
+      setPurchaseResponse(`Erro ao processar a compra: ${err.message}`);
     } finally {
-      setIsBuying(false);
+      setIsPurchasing(false);
     }
   };
+
+  if (error) return <div className="text-red-500">Erro: {error.message}</div>;
+  if (isLoading) return <div className="flex justify-center items-center"><span className="loader"></span>Carregando...</div>;
+  if (!data) return null;
 
   return (
     <div className="p-8">
@@ -122,7 +119,7 @@ export default function ProdutosPage() {
       {/* Pesquisa */}
       <PesquisarProdutos pesquisa={search} setPesquisa={setSearch} />
 
-      {/* Select para ordenação */}
+      {/* Ordenação */}
       <div className="mt-4 mb-6">
         <label htmlFor="ordenacao" className="mr-2 font-semibold">Ordenar por:</label>
         <select
@@ -166,17 +163,15 @@ export default function ProdutosPage() {
                 />
               ))}
             </div>
-            <p className="mt-4 font-semibold text-lg">
-              Total: ${totalPrice.toFixed(2)}
-            </p>
+            <p className="mt-4 font-semibold text-lg">Total: ${totalPrice.toFixed(2)}</p>
           </div>
         )}
       </div>
 
+      {/* Finalizar compra */}
       <div className="mt-8 p-4 border rounded max-w-md">
         <h2 className="text-xl font-bold mb-4">Finalizar compra</h2>
 
-        {/* Estudante */}
         <label className="flex items-center gap-2 mb-3">
           <input
             type="checkbox"
@@ -186,7 +181,6 @@ export default function ProdutosPage() {
           Estudante DEISI
         </label>
 
-        {/* Cupão */}
         <input
           type="text"
           placeholder="Cupão de desconto"
@@ -195,14 +189,28 @@ export default function ProdutosPage() {
           className="border p-2 w-full mb-4"
         />
 
-        {/* Comprar */}
         <button
           onClick={buy}
-          disabled={cart.length === 0 || isBuying}
+          disabled={cart.length === 0 || isPurchasing}
           className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 disabled:opacity-50"
         >
-          {isBuying ? "A processar..." : "Comprar"}
+          {isPurchasing ? "A processar..." : "Comprar"}
         </button>
+
+        {/* Mensagem de compra */}
+        {purchaseResponse && (
+          <div
+            className={`mt-4 p-4 rounded text-center text-lg font-medium ${
+              purchaseResponse.includes("sucesso")
+                ? "bg-green-100 text-green-800 border border-green-300"
+                : "bg-red-100 text-red-800 border border-red-300"
+            }`}
+          >
+            {purchaseResponse.split("\n").map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
