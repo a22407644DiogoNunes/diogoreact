@@ -1,13 +1,11 @@
 import caracteristicas from "../../data/caracteristicas.json";
 import Link from "next/link";
 
-interface PageProps {
-  params: {
-    caracteristica: string;
-  };
-}
-
-export default function CaracteristicaPage({ params }: PageProps) {
+export default function CaracteristicaPage({
+  params,
+}: {
+  params: { caracteristica: string };
+}) {
   const nome = decodeURI(params.caracteristica);
 
   const caract = caracteristicas.find(c => c.nome === nome);
