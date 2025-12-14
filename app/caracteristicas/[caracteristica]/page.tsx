@@ -1,35 +1,39 @@
 import caracteristicas from "../../data/caracteristicas.json";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-// Tipagem para os params da rota
-interface Params {
-  params: { caracteristica: string };
-}
+// ← Muda pra async e await params
+export default async function CaracteristicaPage({
+  params,
+}: {
+  params: Promise<{ caracteristica: string }>;
+}) {
+  // Await no params (obrigatório no Next.js novo)
+  const { caracteristica } = await params;
 
-// Gera os caminhos estáticos para todas as características
-export async function generateStaticParams() {
-  return caracteristicas.map(c => ({ caracteristica: c.nome }));
-}
+  const slugRecebido = decodeURIComponent(caracteristica).toLowerCase().trim();
 
-export default function CaracteristicaPage({ params }: Params) {
-  const nome = decodeURI(params.caracteristica);
-
-  const caract = caracteristicas.find(c => c.nome === nome);
+  const caract = caracteristicas.find(
+    (c: any) => c.nome.toLowerCase().trim() === slugRecebido
+  );
 
   if (!caract) {
-    return <h1 className="text-white text-center mt-20">Característica não encontrada</h1>;
+    notFound(); // 404 oficial do Next.js
   }
 
   return (
     <main className="min-h-screen flex items-center justify-center text-white p-6">
-      <div className="bg-slate-800 p-8 rounded-xl w-2/3 text-center">
-        <h1 className="text-3xl font-bold mb-4">{caract.nome}</h1>
-        <p className="mb-6">{caract.descricao}</p>
+      <div className="bg-slate-800 p-10 rounded-xl max-w-2xl w-full text-center">
+        <h1 className="text-4xl font-bold mb-8">{caract.nome}</h1>
+        <p className="text-lg leading-relaxed mb-10">{caract.descricao}</p>
 
-        <Link href="/caracteristicas" className="bg-blue-500 px-4 py-2 rounded-lg">
-          Voltar
+        <Link
+          href="/caracteristicas"
+          className="bg-blue-600 hover:bg-blue-500 px-8 py-3 rounded-lg text-lg inline-block"
+        >
+          ← Voltar para lista
         </Link>
       </div>
-    </main>
-  );
+    </main>
+  );
 }
