@@ -1,9 +1,17 @@
 import caracteristicas from "../../data/caracteristicas.json";
 import Link from "next/link";
 
-export async function generateStaticParams() { return caracteristicas.map(c => ({ caracteristica: c.nome })); }
+// Tipagem para os params da rota
+interface Params {
+  params: { caracteristica: string };
+}
 
-export default function CaracteristicaPage({ params }: any) {
+// Gera os caminhos estáticos para todas as características
+export async function generateStaticParams() {
+  return caracteristicas.map(c => ({ caracteristica: c.nome }));
+}
+
+export default function CaracteristicaPage({ params }: Params) {
   const nome = decodeURI(params.caracteristica);
 
   const caract = caracteristicas.find(c => c.nome === nome);
