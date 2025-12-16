@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Product } from '@/models/interfaces';
 import Link from 'next/link';
 
@@ -10,6 +11,12 @@ export default function ProdutoDetalhe({ produto, onFavorito }: ProdutoDetalhePr
     const imageUrl = produto.image.startsWith('http') 
   ? produto.image 
   : `https://deisishop.pythonanywhere.com${produto.image}`;
+
+    const [favorito, setFavorito] = useState(false);
+    const handleFavorito = () => {
+    setFavorito(!favorito);
+    onFavorito?.();
+  };
 
     return (
         <div className="max-w-3xl mx-auto p-8">
