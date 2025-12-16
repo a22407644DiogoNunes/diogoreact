@@ -39,6 +39,11 @@ export default function AppPage() {
               Loja
             </Link>
           </li>
+          <li>
+            <Link href="/paises" className="hover:text-yellow-400">
+              Paises
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>

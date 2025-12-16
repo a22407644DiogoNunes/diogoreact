@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Product } from '@/models/interfaces';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -6,11 +7,19 @@ interface ProdutoCardProps {
   produto: Product;
   onAddToCart?: () => void;
   onRemoveFromCart?: () => void;
-  isInCart?: boolean; // indica se está no carrinho
+  onFavorito?: () => void;
+  isInCart?: boolean;
 }
 
-export default function ProdutoCard({ produto, onAddToCart, onRemoveFromCart, isInCart }: ProdutoCardProps) {
+export default function ProdutoCard({produto,onAddToCart,onRemoveFromCart,onFavorito,isInCart}: ProdutoCardProps) {
   const imageUrl = `https://deisishop.pythonanywhere.com${produto.image}`;
+
+  const [favorito, setFavorito] = useState(false);
+
+  const handleFavorito = () => {
+    setFavorito(!favorito);
+    onFavorito?.();
+  };
 
   return (
     <div className="border rounded-lg p-4 shadow-md flex flex-col items-center">
@@ -18,7 +27,6 @@ export default function ProdutoCard({ produto, onAddToCart, onRemoveFromCart, is
       <h2 className="font-bold text-lg">{produto.title}</h2>
       <p className="text-green-600 font-semibold">${produto.price}</p>
 
-      {/* Botão para carrinho */}
       {!isInCart && onAddToCart && (
         <button
           onClick={onAddToCart}
@@ -37,10 +45,18 @@ export default function ProdutoCard({ produto, onAddToCart, onRemoveFromCart, is
         </button>
       )}
 
-      {/* Botão +info */}
       <Link href={`/produtos/${produto.id}`} className="mt-2 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
         +info
       </Link>
+
+      <button
+        onClick={handleFavorito}
+        className={`mt-2 px-4 py-2 rounded transition
+          ${favorito ? 'bg-pink-600 text-white' : 'bg-pink-600 text-black'}
+        `}
+      >
+        ❤️
+      </button>
     </div>
   );
 }

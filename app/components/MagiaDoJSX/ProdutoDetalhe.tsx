@@ -3,9 +3,10 @@ import Link from 'next/link';
 
 interface ProdutoDetalheProps {
     produto: Product;
+      onFavorito?: () => void;
 }
 
-export default function ProdutoDetalhe({ produto }: ProdutoDetalheProps) {
+export default function ProdutoDetalhe({ produto, onFavorito }: ProdutoDetalheProps) {
     const imageUrl = produto.image.startsWith('http') 
   ? produto.image 
   : `https://deisishop.pythonanywhere.com${produto.image}`;
@@ -22,6 +23,15 @@ export default function ProdutoDetalhe({ produto }: ProdutoDetalheProps) {
             <Link href="/produtos" className="mt-6 inline-block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
                 Voltar à lista de produtos
             </Link>
+
+      <button
+        onClick={handleFavorito}
+        className={`mt-2 px-4 py-2 rounded transition
+          ${favorito ? 'bg-pink-600 text-white' : 'bg-pink-600 text-black'}
+        `}
+      >
+        ❤️
+      </button>
         </div>
     );
 }
