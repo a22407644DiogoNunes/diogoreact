@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Product } from '@/models/interfaces';
 import Link from 'next/link';
 
@@ -12,12 +11,6 @@ export default function ProdutoDetalhe({ produto, onFavorito }: ProdutoDetalhePr
   ? produto.image 
   : `https://deisishop.pythonanywhere.com${produto.image}`;
 
-    const [favorito, setFavorito] = useState(false);
-    const handleFavorito = () => {
-    setFavorito(!favorito);
-    onFavorito?.();
-  };
-
     return (
         <div className="max-w-3xl mx-auto p-8">
             <img src={imageUrl} alt={produto.title} className="w-64 h-64 object-contain mx-auto mb-4" />
@@ -30,15 +23,6 @@ export default function ProdutoDetalhe({ produto, onFavorito }: ProdutoDetalhePr
             <Link href="/produtos" className="mt-6 inline-block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
                 Voltar à lista de produtos
             </Link>
-
-      <button
-        onClick={handleFavorito}
-        className={`mt-2 px-4 py-2 rounded transition
-          ${favorito ? 'bg-pink-600 text-white' : 'bg-pink-600 text-black'}
-        `}
-      >
-        ❤️
-      </button>
         </div>
     );
 }
