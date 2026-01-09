@@ -48,15 +48,6 @@ export default function ProdutoCard({produto,onAddToCart,onRemoveFromCart,onFavo
       <Link href={`/produtos/${produto.id}`} className="mt-2 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
         +info
       </Link>
-
-      <button
-        onClick={handleFavorito}
-        className={`mt-2 px-4 py-2 rounded transition
-          ${favorito ? 'bg-pink-600 text-white' : 'bg-pink-600 text-black'}
-        `}
-      >
-        ❤️
-      </button>
     </div>
   );
 }
